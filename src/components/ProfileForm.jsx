@@ -4,8 +4,15 @@ import './ProfileForm.css';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 const ProfileForm = ({ onProfileSubmit, user }) => {
-  const [skillsWant, setSkillsWant] = useState('');
-  const [skillsHaveFields, setSkillsHaveFields] = useState([{ skill: '', level: 'beginner' }]);
+
+  const [eventName, setEventName] = useState('');
+  const [modeOfTransportation, setModeOfTransportation] = useState('');
+  const [maxNumberOfPeople, setMaxNumberOfPeople] = useState('');
+  const [datetime, setDatetime] = useState('');
+  const [recurring, setRecurring] = useState('');
+  const [notes, setNotes] = useState('');
+
+
   const [imageFile, setImageFile] = useState(null);
 
   const handleFileChange = (e) => {
@@ -18,21 +25,11 @@ const ProfileForm = ({ onProfileSubmit, user }) => {
     }
   };
 
-  const handleSkillsHaveChange = (index, field, value) => {
-    const newSkillsHaveFields = [...skillsHaveFields];
-    newSkillsHaveFields[index][field] = value;
-    setSkillsHaveFields(newSkillsHaveFields);
-  };
-
-  const addSkillsHaveField = () => {
-    setSkillsHaveFields([...skillsHaveFields, { skill: '', level: 'beginner' }]);
-  };
-
-  const removeSkillsHaveField = (index) => {
-    const newSkillsHaveFields = [...skillsHaveFields];
-    newSkillsHaveFields.splice(index, 1);
-    setSkillsHaveFields(newSkillsHaveFields);
-  };
+  // const handleSkillsHaveChange = (index, field, value) => {
+  //   const newSkillsHaveFields = [...skillsHaveFields];
+  //   newSkillsHaveFields[index][field] = value;
+  //   setSkillsHaveFields(newSkillsHaveFields);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,40 +53,31 @@ const ProfileForm = ({ onProfileSubmit, user }) => {
 
     onProfileSubmit({
       name,
+      eventName,
+      modeOfTransportation,
+      maxNumberOfPeople,
+      datetime,
+      recurring,
+      notes,
       image: imageUrl,
-      email,
-      "skills-want": skillsWant.split(',').map(skill => skill.trim()),
-      "skills-have": skillsHaveFields.map(field => field.skill.trim()),
-      "skills-have-levels": skillsHaveFields.map(field => field.level),
+      email
     });
 
-    setSkillsWant('');
-    setSkillsHaveFields([{ skill: '', level: 'beginner' }]);
+    setEventName('');
+    setModeOfTransportation('');
+    setMaxNumberOfPeople('');
+    setDatetime('');
+    setRecurring('');
+    setNotes('');
     setImageFile(null);
   };
 
-
-  // <Card.Img variant="top" src={person.image} />
-//   <Card.Body>
-//   <Card.Title>{person.name}</Card.Title>
-
-//   <Card.Text>Event: Go to work</Card.Text>
-//   <Card.Text>Mode of transportation: SUV</Card.Text>
-//   <Card.Text>Max number of people: 5</Card.Text>
-//   <Card.Text>Datetime: 11/10/23</Card.Text>
-//   <Card.Text>Recurring: Yes</Card.Text>
-//   <Card.Text>Notes: May have dog hair. Non smoking</Card.Text>
-//   <a href={`mailto:${person.email}`}>
-//     <Button variant="primary">Contact</Button>
-//   </a>
-// </Card.Body>
-  // 
   return (
     <div className='profileForm'>
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Label>Event Name</Form.Label>
-          <Form.Control placeholder="grocery run..." required type="text" />
+          <Form.Control placeholder="e.g., grocery run" required type="text" />
         </Form.Group>
         <Form.Group>
           <Form.Label>Mode of transportation</Form.Label>
@@ -104,7 +92,6 @@ const ProfileForm = ({ onProfileSubmit, user }) => {
           <Form.Control required type="date" />
           <Form.Control required type="time" />
         </Form.Group>
-
         <Form.Group>
           <Form.Label>Recurring</Form.Label>
           <Form.Control
@@ -112,15 +99,14 @@ const ProfileForm = ({ onProfileSubmit, user }) => {
                   // value={field.level}
                   // onChange={(e) => handleSkillsHaveChange(index, 'level', e.target.value)}
                 >
-                  <option value="beginner">No</option>
-                  <option value="intermediate">Yes</option>
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
             </Form.Control>
         </Form.Group>
         <Form.Group>
           <Form.Label>Additional Notes</Form.Label>
           <Form.Control placeholder="e.g., may have dog hair" type="text" />
         </Form.Group>
-
         <Form.Group className="form-group">
           <Form.Label>Profile Picture</Form.Label>
           <Form.Control type="file" onChange={handleFileChange} accept=".jpg,.jpeg,.png" />
