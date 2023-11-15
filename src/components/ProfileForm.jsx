@@ -74,83 +74,64 @@ const ProfileForm = ({ onProfileSubmit, user }) => {
 
   return (
     <div className='profileForm'>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group>
-          <Form.Label>Event Name</Form.Label>
-          <Form.Control placeholder="e.g., grocery run" required type="text" />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Mode of transportation</Form.Label>
-          <Form.Control placeholder="SUV, Sedan, ..." required type="text" />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Max number of people</Form.Label>
-          <Form.Control required type="number" min="1"/>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Datetime</Form.Label>
-          <Form.Control required type="date" />
-          <Form.Control required type="time" />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Recurring</Form.Label>
-          <Form.Control
-                  as="select"
-                  // value={field.level}
-                  // onChange={(e) => handleSkillsHaveChange(index, 'level', e.target.value)}
-                >
-                  <option value="no">No</option>
-                  <option value="yes">Yes</option>
+     <Form onSubmit={handleSubmit} className="custom-form">
+       <Form.Group className="form-group">
+         <Form.Label>Event Name</Form.Label>
+         <Form.Control className="form-control" placeholder="e.g., grocery run" required type="text" />
+       </Form.Group>
+       <Form.Group className="form-group-horizontal">
+            <Form.Label className="form-label-horizontal">Car Type:</Form.Label>
+            <Form.Control className="form-control" as="select">
+                <option value="hatchback">Hatchback</option>
+                <option value="sedan">Sedan</option>
+                <option value="coupe">Coupe</option>
+                <option value="crossover">Crossover</option>
+                <option value="suv">SUV</option>
+                <option value="minivan">Minivan</option>
+                <option value="minivan">Pickup</option>
+                <option value="bus">Bus</option>
             </Form.Control>
         </Form.Group>
-        <Form.Group>
-          <Form.Label>Additional Notes</Form.Label>
-          <Form.Control placeholder="e.g., may have dog hair" type="text" />
+       <Form.Group className="form-group-horizontal">
+         <Form.Label className="form-label-horizontal">Seats</Form.Label>
+         <Form.Control className="form-control" as="select">
+                <option value="1"> 1</option>
+                <option value="2">2</option>
+                <option value="2">3</option>
+                <option value="2">4</option>
+                <option value="2">5</option>
+                <option value="2">6</option>
+                <option value="2">7</option>
+                <option value="2">8</option>
+            </Form.Control>
+       </Form.Group>
+       <Form.Group className="form-group-horizontal">
+    <Form.Label className="form-label-horizontal">Datetime:</Form.Label>
+        <div className="datetime-controls">
+            <Form.Control className="form-control datetime-control" required type="date" />
+            <Form.Control className="form-control datetime-control" required type="time" />
+        </div>
+    </Form.Group>
+       <Form.Group className="form-group-horizontal">
+            <Form.Label className="form-label-horizontal">Recurring:</Form.Label>
+            <Form.Control className="form-control" as="select">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </Form.Control>
         </Form.Group>
-        <Form.Group className="form-group">
-          <Form.Label>Profile Picture</Form.Label>
-          <Form.Control type="file" onChange={handleFileChange} accept=".jpg,.jpeg,.png" />
-        </Form.Group>
 
-        <Button type="submit">Create Profile</Button>
-      </Form>
+       <Form.Group className="form-group">
+         <Form.Label>Additional Notes</Form.Label>
+         <Form.Control className="form-control" placeholder="e.g., may have dog hair" type="text" />
+       </Form.Group>
+       <Form.Group className="form-group">
+         <Form.Label>Profile Picture</Form.Label>
+         <Form.Control className="form-control" type="file" onChange={handleFileChange} accept=".jpg,.jpeg,.png" />
+       </Form.Group>
 
-          {/* {skillsHaveFields.map((field, index) => (
-            <div className="row">
-              <div key={index} className="input-skills-have">
-                <div className="col-7">
-                <Form.Control
-                  required
-                  type="text"
-                  value={field.skill}
-                  onChange={(e) => handleSkillsHaveChange(index, 'skill', e.target.value)}
-                />
-                </div>
-                <div className="col">
-                <Form.Control
-                  as="select"
-                  value={field.level}
-                  onChange={(e) => handleSkillsHaveChange(index, 'level', e.target.value)}
-                >
-                  <option value="beginner">Beginner</option>
-                  <option value="intermediate">Intermediate</option>
-                  <option value="advanced">Advanced</option>
-                </Form.Control>
-                </div>
-                <Button variant="danger" className="remove-skills-button" onClick={() => removeSkillsHaveField(index)}>-</Button>
-              </div>
-            </div>
-          ))} 
-          <Button variant="success" className="add-skills-button" onClick={addSkillsHaveField}>+ Add Skill</Button>
-          </Form.Group> */}    
-{/* 
-        <Form.Group>
-          <Form.Label>Card Color</Form.Label>
-          <Form.Control required type="color" />
-        </Form.Group>     */}
-
-        
-    </div>
+       <Button className="submit-button" type="submit">Create Profile</Button>
+     </Form>
+</div>
   );
 };
 

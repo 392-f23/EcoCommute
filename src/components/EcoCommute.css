@@ -4,18 +4,10 @@ body {
   height: 100%;
   margin: 0;
 }
-h1 {
-  text-align: center;
-  font-size: 3rem;
-  margin-top: 20px; /* Adjust as needed */
-  color: white;
-}
 
-.logged-in h1 {
-  color: black;
-}
+
 body {
-  font-family: "Arial", sans-serif;
+  font-family: "Montserrat", sans-serif;
   margin: 0; /* Ensure there's no default margin */
 }
 
@@ -31,7 +23,8 @@ body {
 }
 
 .not-logged-in {
-  background: linear-gradient(45deg, #4a90e2, #50e3a4);
+  /** background: linear-gradient(45deg, #4a90e2, #50e3a4); **/
+  background: rgb(181, 209, 233);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -41,12 +34,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(
-    45deg,
-    rgba(74, 144, 226, 0.4),
-    rgba(80, 227, 164, 0.4)
-  );
-  background-size: cover;
+  /** background: linear-gradient(45deg, #4a90e2, #eaecf0); **/
+  background: rgb(181, 209, 233);
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -200,4 +189,111 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
+}
+
+.text-container {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+  margin-bottom: 10px; /* Added for vertical spacing */
+  padding: 5px 15px; /* Adjust padding as needed */
+  border-radius: 20px; /* More rounded borders */
+  background-color: #f0f0f0; /* Light grey background, change as needed */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  font-family: 'Arial', sans-serif; /* Change font family as desired */
+  font-size: 0.9rem; /* Adjust font size as needed */
+}
+
+/* Style for the Card.Text if needed */
+.card-text {
+  margin: 0; /* Remove default margins */
+  padding: 0; /* Remove default padding */
+}
+
+.contact-button-link {
+  text-decoration: none; /* Removes underline from the link */
+}
+
+.contact-button {
+  background-color: #007bff; /* Primary color, change as needed */
+  border: none; /* Removes the border */
+  padding: 10px 20px; /* Adjusts padding for a better shape */
+  border-radius: 25px; /* Rounded edges */
+  color: white; /* Text color */
+  font-size: 1rem; /* Adjusts font size */
+  font-weight: bold; /* Makes the text bold */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.contact-button:hover, .contact-button:focus {
+  background-color: #0056b3; /* Slightly darker shade on hover */
+  color: #fff; /* Text color on hover */
+  text-decoration: none; /* Ensures no underline on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Larger shadow on hover */
+}
+
+/* Optional: Adjusting link styles inside the button, if any */
+.contact-button a {
+  color: inherit; /* Inherits color from button */
+  text-decoration: none; /* Removes underline */
+}
+
+@keyframes fadeInSlide {
+  0% {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.top-heading {
+  font-family: 'Montserrat', sans-serif; /* Modern, clean font */
+  color: #2e3b8b; /* Dark grey color, change as needed */
+  font-size: 2.5rem; /* Large font size */
+  font-weight: bold; /* Bold font weight */
+  text-align: center; /* Center align the text */
+  margin-top: 20px; /* Adds some space on the top */
+  margin-bottom: 20px; /* Adds some space on the bottom */
+  animation: fadeInSlide 1s ease-out; /* Applies the animation */
+  letter-spacing: 1.5px; /* Slightly increases spacing between letters */
+}
+
+.custom-card {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.card-img {
+    position: absolute;
+    top: -100%; /* Hide the image initially */
+    width: 100%;
+    transition: top 0.3s ease;
+}
+
+.custom-card:hover .card-img,
+.custom-card:focus .card-img {
+    top: 0; /* Show the image on hover or focus */
+}
+
+/* Lip at the top of the card */
+.custom-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px; /* Height of the lip */
+    background-color: #007bff; /* Color of the lip, change as needed */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+  .top-heading {
+      font-size: 2rem; /* Smaller font size for mobile devices */
+  }
 }

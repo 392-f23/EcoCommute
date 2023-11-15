@@ -10,6 +10,7 @@ import Navigation from "./Navigation";
 import { BrowserRouter } from "react-router-dom";
 import { db, useAuthState }  from "../utilities/firebase";
 import SearchBar from "./SearchBar";
+import { Person, Calendar3, InfoCircle } from 'react-bootstrap-icons';
 
 const EcoCommute = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -123,18 +124,33 @@ const EcoCommute = () => {
                 {filteredData.map((person, index) => (
                   <div className="skill-cards-container" key={index}>
                     <div className="skill-cards" key={index}>
-                      <Card style={{ width: "18rem" }}>
-                        <Card.Img variant="top" src={person.image} />
-                        <Card.Body>
-                          <Card.Title>{person.name}</Card.Title>
-                          <Card.Text>Event: Go to work</Card.Text>
-                          <Card.Text>Mode of transportation: SUV</Card.Text>
-                          <Card.Text>Max number of people: 5</Card.Text>
-                          <Card.Text>Datetime: 11/10/23</Card.Text>
-                          <Card.Text>Recurring: Yes</Card.Text>
-                          <Card.Text>Notes: May have dog hair. Non smoking</Card.Text>
-                          <a href={`mailto:${person.email}`}>
-                            <Button variant="primary">Contact</Button>
+                      <Card style={{ width: "18rem" }} className="custom-card">
+                        <Card.Img variant="top" src={person.image} className="card-img" />
+                          <Card.Body>
+                            <Card.Title>{person.name}</Card.Title>
+                            <div className="text-container">
+                                <Card.Text>🎯 Go to work</Card.Text>
+                            </div>
+                            <div className="text-container">
+                                <Card.Text>🚗 SUV</Card.Text>
+                            </div>
+                            <div className="text-container">
+                                <Card.Text>👥 5</Card.Text>
+                            </div>
+                            <div className="text-container">
+                                <Card.Text>🗓️ 11/10/23</Card.Text>
+                            </div>
+                            <div className="text-container">
+                                <Card.Text>⏰ 8:15 am</Card.Text>
+                            </div>
+                            <div className="text-container">
+                                <Card.Text>🔄 Yes</Card.Text>
+                            </div>
+                            <div className="text-container">
+                                <Card.Text>ℹ️ May have dog hair. Non smoking</Card.Text>
+                            </div>
+                            <a href={`mailto:${person.email}`} className="contact-button-link">
+                              <Button variant="primary" className="contact-button">Contact</Button>
                           </a>
                         </Card.Body>
                       </Card>
