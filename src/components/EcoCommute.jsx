@@ -93,7 +93,7 @@ const EcoCommute = () => {
                                 <Card.Text>🔄 Recurring: {person.recurring === 'yes' ? 'Yes' : 'No'}</Card.Text>
                             </div>
                             <div className="text-container">
-                                <Card.Text>ℹ️ Additional Notes: {person.additionalNotes</Card.Text>
+                                <Card.Text>ℹ️ Additional Notes: {person.additionalNotes}</Card.Text>
                             </div>
                             <a href={`mailto:${person.email}`} className="contact-button-link">
                               <Button variant="primary" className="contact-button">Contact</Button>
