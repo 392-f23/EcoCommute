@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import './SearchBar.css'; // Import the CSS file
 
 // function Search({ details }) {
 
@@ -47,25 +47,24 @@ import React, { useState } from "react";
 // }
 
 const SearchBar = ({ onSearch }) => {
-    const [searchTerm, setSearchTerm] = useState("");
-  
-    const handleSearch = (e) => {
-        console.log("e", e)
-        console.log("e.target.value", e.target.value)
-        onSearch(e.target.value);
-        setSearchTerm(e.target.value);
-    };
-  
-    return (
-      <div>
-        <input
-          type="text"
-          placeholder="Search"
-          value={searchTerm}
-          onChange={handleSearch}
-        />
-      </div>
-    );
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (e) => {
+      onSearch(e.target.value);
+      setSearchTerm(e.target.value);
   };
-  
+
+  return (
+      <div className="search-bar-container">
+          <input
+              type="text"
+              className="search-input"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={handleSearch}
+          />
+      </div>
+  );
+};
+
 export default SearchBar;

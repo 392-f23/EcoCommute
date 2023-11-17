@@ -7,8 +7,10 @@ import ProfileForm from "./ProfileForm";
 import { getDatabase, ref as dbRef, push, onValue } from "firebase/database"; // Realtime Database imports
 import Navigation from "./Navigation";
 import { BrowserRouter } from "react-router-dom";
-import { useAuthState } from "../utilities/firebase";
-import SearchBar from "./SearchBar"
+
+import { db, useAuthState }  from "../utilities/firebase";
+import SearchBar from "./SearchBar";
+import { Person, Calendar3, InfoCircle } from 'react-bootstrap-icons';
 
 const EcoCommute = () => {
   const [data, setData] = useState([]);
@@ -71,18 +73,30 @@ const EcoCommute = () => {
                   console.log("Person data: ", person),
                   <div className="skill-cards-container" key={index}>
                     <div className="skill-cards" key={index}>
-                      <Card style={{ width: "18rem" }}>
-                        <Card.Img variant="top" src={person.image} />
-                        <Card.Body>
-                          <Card.Title>{person.name}</Card.Title>
-                          <Card.Text>Event Name: {person.eventName}</Card.Text>
-                          <Card.Text>Mode of Transportation: {person.modeOfTransportation}</Card.Text>
-                          <Card.Text>Max Number of People: {person.maxNumberOfPeople}</Card.Text>
-                          <Card.Text>Date and Time: {person.dateTime}</Card.Text>
-                          <Card.Text>Recurring: {person.recurring === 'yes' ? 'Yes' : 'No'}</Card.Text>
-                          <Card.Text>Additional Notes: {person.additionalNotes}</Card.Text>
-                          <a href={`mailto:${person.email}`}>
-                            <Button variant="primary">Contact</Button>
+                      <Card style={{ width: "18rem" }} className="custom-card">
+                        <Card.Img variant="top" src={person.image} className="card-img" />
+                          <Card.Body>
+                            <Card.Title>{person.name}</Card.Title>
+                            <div className="text-container">
+                                <Card.Text>🎯 Event Name: {person.eventName} </Card.Text>
+                            </div>
+                            <div className="text-container">
+                                <Card.Text>🚗 Mode of Transportation: {person.modeOfTransportation}</Card.Text>
+                            </div>
+                            <div className="text-container">
+                                <Card.Text>👥 Max Number of People: {person.maxNumberOfPeople}</Card.Text>
+                            </div>
+                            <div className="text-container">
+                                <Card.Text>🗓️ Date and Time: {person.dateTime}</Card.Text>
+                            </div>
+                            <div className="text-container">
+                                <Card.Text>🔄 Recurring: {person.recurring === 'yes' ? 'Yes' : 'No'}</Card.Text>
+                            </div>
+                            <div className="text-container">
+                                <Card.Text>ℹ️ Additional Notes: {person.additionalNotes</Card.Text>
+                            </div>
+                            <a href={`mailto:${person.email}`} className="contact-button-link">
+                              <Button variant="primary" className="contact-button">Contact</Button>
                           </a>
                         </Card.Body>
                       </Card>

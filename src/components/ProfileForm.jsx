@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import './ProfileForm.css';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+
 import { getDatabase, ref as dbRef, push, set } from 'firebase/database'; // Import Realtime Database functions
 
 const ProfileForm = ({ user }) => {
@@ -55,7 +56,6 @@ const ProfileForm = ({ user }) => {
     setAdditionalNotes(e.target.value);
   }
   
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -131,49 +131,64 @@ const ProfileForm = ({ user }) => {
 
   return (
     <div className='profileForm'>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group>
-          <Form.Label>Event Name</Form.Label>
-          <Form.Control value={eventName} placeholder="e.g. grocery run..." required type="text" onChange={handleEventNameChange}/>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Mode of transportation</Form.Label>
-          <Form.Control value={modeOfTransportation} placeholder="SUV, Sedan, ..." required type="text" onChange={handleModeOfTransportationChange}/>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Max number of people</Form.Label>
-          <Form.Control value={maxNumberOfPeople} required type="number" min="1" onChange={handleMaxNumberOfPeopleChange}/>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Datetime</Form.Label>
-          <Form.Control required type="date" value={date} onChange={handleDateChange}/>
-          <Form.Control required type="time"  value={time} onChange={handleTimeChange} />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Recurring</Form.Label>
-          <Form.Control
-                  value={recurring}
-                  onChange={handleRecurringChange}
-                  as="select"
-                  // value={field.level}
-                  // onChange={(e) => handleSkillsHaveChange(index, 'level', e.target.value)}
-                >
-                  <option value="no">No</option>
-                  <option value="yes">Yes</option>
+     <Form onSubmit={handleSubmit} className="custom-form">
+       <Form.Group className="form-group">
+         <Form.Label>Event Name</Form.Label>
+         <Form.Control value = {eventName} onChange={handleEventNameChange} className="form-control" placeholder="e.g., grocery run" required type="text" />
+       </Form.Group>
+       <Form.Group className="form-group-horizontal">
+            <Form.Label className="form-label-horizontal">Car Type:</Form.Label>
+            <Form.Control value={modeOfTransportation} onChange={handleModeOfTransportationChange} className="form-control" as="select">
+                <option value="hatchback">Hatchback</option>
+                <option value="sedan">Sedan</option>
+                <option value="coupe">Coupe</option>
+                <option value="crossover">Crossover</option>
+                <option value="suv">SUV</option>
+                <option value="minivan">Minivan</option>
+                <option value="minivan">Pickup</option>
+                <option value="bus">Bus</option>
             </Form.Control>
         </Form.Group>
-        <Form.Group>
-          <Form.Label>Additional Notes</Form.Label>
-          <Form.Control value={additionalNotes} placeholder="e.g., may have dog hair" type="text" onChange={handleAdditionalNotesChange}/>
+       <Form.Group className="form-group-horizontal">
+         <Form.Label className="form-label-horizontal">Seats</Form.Label>
+         <Form.Control value={maxNumberOfPeople} onChange={handleMaxNumberOfPeopleChange} className="form-control" as="select">
+                <option value="1"> 1</option>
+                <option value="2">2</option>
+                <option value="2">3</option>
+                <option value="2">4</option>
+                <option value="2">5</option>
+                <option value="2">6</option>
+                <option value="2">7</option>
+                <option value="2">8</option>
+            </Form.Control>
+       </Form.Group>
+       <Form.Group className="form-group-horizontal">
+          <Form.Label className="form-label-horizontal">Datetime:</Form.Label>
+              <div className="datetime-controls">
+                  <Form.Control required type="date" value={date} onChange={handleDateChange}/>
+                  <Form.Control required type="time"  value={time} onChange={handleTimeChange} />
+              </div>
         </Form.Group>
-        <Form.Group className="form-group">
-          <Form.Label>Profile Picture</Form.Label>
-          <Form.Control type="file" onChange={handleFileChange} accept=".jpg,.jpeg,.png" />
+       <Form.Group className="form-group-horizontal">
+            <Form.Label className="form-label-horizontal">Recurring:</Form.Label>
+            <Form.Control value={recurring} onChange={handleRecurringChange} className="form-control" as="select">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </Form.Control>
         </Form.Group>
 
-        <Button type="submit">Create Profile</Button>
-      </Form>
-    </div>
+       <Form.Group className="form-group">
+         <Form.Label>Additional Notes</Form.Label>
+         <Form.Control value={additionalNotes} onChange={handleAdditionalNotesChange} className="form-control" placeholder="e.g., may have dog hair" type="text" />
+       </Form.Group>
+       <Form.Group className="form-group">
+         <Form.Label>Profile Picture</Form.Label>
+         <Form.Control className="form-control" type="file" onChange={handleFileChange} accept=".jpg,.jpeg,.png" />
+       </Form.Group>
+
+       <Button className="submit-button" type="submit">Create Profile</Button>
+     </Form>
+  </div>
   );
 };
 
