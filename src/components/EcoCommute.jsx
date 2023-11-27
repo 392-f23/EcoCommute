@@ -232,7 +232,7 @@ const EcoCommute = () => {
                             <a href={`mailto:${person.email}`} className="contact-button-link">
                               <Button variant="primary" className="contact-button">Contact</Button>
                             </a>
-                            <Button variant="primary" onClick={() => handleRequestClick(person.id)}>
+                            <Button variant="primary" className="request-button" onClick={() => handleRequestClick(person.id)}>
                               Request to Join
                             </Button>
                         </Card.Body>
