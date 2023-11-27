@@ -154,12 +154,12 @@ const ProfileForm = ({ user }) => {
          <Form.Control value={maxNumberOfPeople} onChange={handleMaxNumberOfPeopleChange} className="form-control" as="select">
                 <option value="1"> 1</option>
                 <option value="2">2</option>
-                <option value="2">3</option>
-                <option value="2">4</option>
-                <option value="2">5</option>
-                <option value="2">6</option>
-                <option value="2">7</option>
-                <option value="2">8</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
             </Form.Control>
        </Form.Group>
        <Form.Group className="form-group-horizontal">
@@ -171,7 +171,7 @@ const ProfileForm = ({ user }) => {
         </Form.Group>
        <Form.Group className="form-group-horizontal">
             <Form.Label className="form-label-horizontal">Recurring:</Form.Label>
-            <Form.Control value={recurring} onChange={handleRecurringChange} className="form-control" as="select">
+            <Form.Control required value={recurring} onChange={handleRecurringChange} className="form-control" as="select">
                 <option value="no">No</option>
                 <option value="yes">Yes</option>
             </Form.Control>
