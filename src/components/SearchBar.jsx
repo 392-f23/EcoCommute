@@ -1,6 +1,29 @@
 import React, { useState } from "react";
 import './SearchBar.css'; // Import the CSS file
 
+const SearchBar = ({ onSearch }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (e) => {
+      onSearch(e.target.value);
+      setSearchTerm(e.target.value);
+  };
+
+  return (
+      <div className="search-bar-container">
+          <input
+              type="text"
+              className="search-input"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={handleSearch}
+          />
+      </div>
+  );
+};
+
+export default SearchBar;
+
 // function Search({ details }) {
 
 //   const [searchField, setSearchField] = useState("");
@@ -45,26 +68,3 @@ import './SearchBar.css'; // Import the CSS file
 //     </section>
 //   );
 // }
-
-const SearchBar = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const handleSearch = (e) => {
-      onSearch(e.target.value);
-      setSearchTerm(e.target.value);
-  };
-
-  return (
-      <div className="search-bar-container">
-          <input
-              type="text"
-              className="search-input"
-              placeholder="Search"
-              value={searchTerm}
-              onChange={handleSearch}
-          />
-      </div>
-  );
-};
-
-export default SearchBar;

@@ -33,12 +33,14 @@ const EcoCommute = () => {
 
   function onSearch(searchTerm) {
     const filteredPersons = data.filter((person) => {
+      console.log(person)
       return (
         person.name.toLowerCase().includes(searchTerm.toLowerCase()) 
         ||
-        person["skills-have"].some((skill) =>
-          skill.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        person.eventName.toLowerCase().includes(searchTerm.toLowerCase()) 
+        // person.eventName.((skill) =>
+        //   skill.toLowerCase().includes(searchTerm.toLowerCase())
+        // )
       );
     });
     setFilteredData(filteredPersons);
