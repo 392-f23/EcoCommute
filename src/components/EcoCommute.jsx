@@ -38,6 +38,10 @@ const EcoCommute = () => {
         person.name.toLowerCase().includes(searchTerm.toLowerCase()) 
         ||
         person.eventName.toLowerCase().includes(searchTerm.toLowerCase()) 
+        ||
+        person.modeOfTransportation.toLowerCase().includes(searchTerm.toLowerCase())
+        ||
+        person.dateTime.includes(searchTerm)
         // person.eventName.((skill) =>
         //   skill.toLowerCase().includes(searchTerm.toLowerCase())
         // )
