@@ -4,8 +4,10 @@ import "./EcoCommute.css";
 import { Button, Card } from "react-bootstrap";
 import ImageDisplay from "./GetImage";
 import ProfileForm from "./ProfileForm";
-import { getDatabase, ref as dbRef, push, onValue } from "firebase/database"; // Realtime Database imports
+import { getDatabase, ref as dbRef, push, onValue, remove, update, get } from "firebase/database"; // Realtime Database imports
 import Navigation from "./Navigation";
+import RideRequestModal from "./RideRequestModal";
+import PendingRequestsModal from "./PendingRequestModal";
 import { BrowserRouter } from "react-router-dom";
 
 import { db, useAuthState }  from "../utilities/firebase";
@@ -16,21 +18,81 @@ const EcoCommute = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [user, signInWithGoogle] = useAuthState();
+  const [userProfiles, setUserProfiles] = useState([]);
+  const [currentRideId, setCurrentRideId] = useState(null);
+  const [showSendRequestModal, setShowSendRequestModal] = useState(false);
+  const [pendingRequests, setPendingRequests] = useState([]);
+  const [showPendingRequestModal, setShowPendingRequestModal] = useState(false);
 
   useEffect(() => {
     const db = getDatabase();
     const profilesRef = dbRef(db, "profiles");
-
+  
     const unsubscribe = onValue(profilesRef, (snapshot) => {
       const profilesData = snapshot.val();
-      const profilesArray = profilesData ? Object.keys(profilesData).map(key => ({ ...profilesData[key], id: key })) : [];
-      setData(profilesArray);
-      setFilteredData(profilesArray);
+      const profilesArray = profilesData 
+        ? Object.keys(profilesData).map(key => ({ ...profilesData[key], id: key }))
+        : [];
+      
+      // Set user profiles
+      setUserProfiles(profilesArray);
+  
+      // Filter non-owned 
+      const nonOwnedRides = profilesArray.filter(person => person.email !== user.email);
+      setData(nonOwnedRides);
+      setFilteredData(nonOwnedRides);
     });
-
+  
     return () => unsubscribe(); // Cleanup subscription
-  }, []);
+  }, [user]);
 
+
+  useEffect(() => {
+    if (user && user.email) {
+      const db = getDatabase();
+      const profilesRef = dbRef(db, "profiles");
+  
+      onValue(profilesRef, (snapshot) => {
+        const profilesData = snapshot.val();
+  
+        if (profilesData) {
+          const userProfileKey = Object.keys(profilesData).find(key => profilesData[key].email === user.email);
+          
+          if (userProfileKey) {
+            const userRequestsRef = dbRef(db, `profiles/${userProfileKey}/requests`);
+  
+            onValue(userRequestsRef, (requestsSnapshot) => {
+              const requestsData = requestsSnapshot.val();
+              let incomingRequests = [];
+  
+              if (requestsData) {
+                Object.keys(requestsData).forEach(requestId => {
+                  const request = requestsData[requestId];
+                  if (request.recipientEmail === user.email) {
+                    incomingRequests.push({
+                      id: requestId,
+                      ...request
+                    });
+                  }
+                });
+              }
+  
+              if (incomingRequests.length > 0) {
+                setPendingRequests(incomingRequests);
+                setShowPendingRequestModal(true);
+              } else {
+                setShowPendingRequestModal(false);
+              }
+            });
+          }
+        }
+      });
+    }
+  }, [user]);
+  
+  
+  
+  
   function onSearch(searchTerm) {
     const filteredPersons = data.filter((person) => {
       console.log(person)
@@ -61,12 +123,85 @@ const EcoCommute = () => {
     }
   };
 
+  const handleRequestClick = (rideId) => {
+    setShowSendRequestModal(true);
+    setCurrentRideId(rideId); // Set the current ride ID in state
+  };
+
+  const handleCloseModal = () => {
+    setShowSendRequestModal(false);
+  };  
+
+
+  const handleAcceptRequest = async (rideId, requestId) => {
+    try {
+      const db = getDatabase();
+      const profilesRef = dbRef(db, "profiles");
+      let userProfileKey;
+
+      const profilesSnapshot = await get(profilesRef);
+      const profiles = profilesSnapshot.val();
+      userProfileKey = Object.keys(profiles).find(key => profiles[key].email === user.email);
+
+      if (userProfileKey) {
+        const rideRef = dbRef(db, `profiles/${userProfileKey}`);
+        const rideSnapshot = await get(rideRef);
+        const ride = rideSnapshot.val();
+
+        console.log('ride:', ride);
+
+        if (ride) {
+          const maxPeople = parseInt(ride.maxNumberOfPeople, 10);
+          console.log('maxPeople:', maxPeople);
+          if (!isNaN(maxPeople) && maxPeople > 0) {
+            await update(rideRef, { maxNumberOfPeople: (maxPeople - 1).toString() });
+          }
+        }
+
+        // Remove the request
+        const requestRef = dbRef(db, `profiles/${userProfileKey}/requests/${requestId}`);
+        await remove(requestRef);
+
+        // Update UI (remove the request from pendingRequests state)
+        setPendingRequests(prevRequests => prevRequests.filter(req => req.id !== requestId));
+      }
+    } catch (error) {
+      console.error("Error accepting request:", error);
+    }
+  };
+  
+
+  const handleDeclineRequest = async (rideId, requestId) => {
+    try {
+      const db = getDatabase();
+      const profilesRef = dbRef(db, "profiles");
+      let userProfileKey;
+  
+      onValue(profilesRef, (snapshot) => {
+        const profiles = snapshot.val();
+        userProfileKey = Object.keys(profiles).find(key => profiles[key].email === user.email);
+  
+        if (userProfileKey) {
+          // Remove the request
+          const requestRef = dbRef(db, `profiles/${userProfileKey}/rides/${rideId}/requests/${requestId}`);
+          remove(requestRef);
+  
+          // Update UI (remove the request from pendingRequests state)
+          setPendingRequests(prevRequests => prevRequests.filter(req => req.id !== requestId));
+        }
+      });
+    } catch (error) {
+      console.error("Error declining request:", error);
+    }
+  };
+  
+  
+
   return (
     <div className={`${!user ? "not-logged-in" : "logged-in"}`}>
       <BrowserRouter>
         {user ? (
-          // User is logged in
-          data.some(((profile) => profile.email === user.email) || hasProfile) ? (
+          userProfiles.some(profile => profile.email === user.email) ? (
             // User has a profile in the database
             <>
               <div className="logged">
@@ -76,7 +211,6 @@ const EcoCommute = () => {
               <SearchBar onSearch={onSearch} />
               <div className="cards-container">
                 {filteredData.map((person, index) => (
-                  console.log("Person data: ", person),
                   <div className="skill-cards-container" key={index}>
                     <div className="skill-cards" key={index}>
                       <Card style={{ width: "18rem" }} className="custom-card">
@@ -103,7 +237,10 @@ const EcoCommute = () => {
                             </div>
                             <a href={`mailto:${person.email}`} className="contact-button-link">
                               <Button variant="primary" className="contact-button">Contact</Button>
-                          </a>
+                            </a>
+                            <Button variant="primary" className="request-button" onClick={() => handleRequestClick(person.id)}>
+                              Request to Join
+                            </Button>
                         </Card.Body>
                       </Card>
                     </div>
@@ -129,6 +266,21 @@ const EcoCommute = () => {
           </div>
         )}
       </BrowserRouter>
+      <RideRequestModal
+        show={showSendRequestModal}
+        handleClose={handleCloseModal}
+        rideId={currentRideId}
+        user={user}
+      />
+      {showPendingRequestModal && (
+        <PendingRequestsModal
+          show={showPendingRequestModal}
+          requests={pendingRequests}
+          onAccept={handleAcceptRequest}
+          onDecline={handleDeclineRequest}
+          onClose={() => setShowPendingRequestModal(false)}
+        />
+      )}
     </div>
   );
 };
